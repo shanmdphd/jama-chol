@@ -1,0 +1,40 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, message = FALSE}
+library(tidyverse)
+library(knitr)
+```
+
+```{r, error = TRUE}
+t3 <- read_csv("table3.csv")
+kable(t3)
+
+diff <- t3$M.88-t3$M.99
+diff
+
+se <- sqrt(t3$SE.88^2+t3$SE.99^2)
+se
+
+deg <- pmin(t3$N.88,t3$N.99)-1
+deg
+
+t <- diff/se
+t
+
+pt(t,df=deg)
+
+pt(-abs(t),df=deg)
+
+2*pt(-abs(t),df=deg)
+
+p <- 2*pt(-abs(t),df=deg)
+for (j in 1:length(p)) {
+     cat("p-value for ",row.names(t3)[j]," ",p[j],"\n");
+}
+```
+
